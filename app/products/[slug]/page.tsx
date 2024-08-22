@@ -11,6 +11,7 @@ import formatPrice from "@/lib/format-price";
 import ProductType from "@/components/products/product.type";
 import ProductPick from "@/components/products/product-pick";
 import ProductShowcase from "@/components/products/product-showcase";
+import Reviews from "@/components/reviews/reviews";
 
 // export const revalidate = 60;
 
@@ -102,7 +103,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
                         {/* <AddCart /> */}
                     </div>
                 </section>
-                {/* <Reviews productID={variant.productID} /> */}
+                <Reviews productID={variant.productID} />
             </main>
         );
     }

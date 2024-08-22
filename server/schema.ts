@@ -139,6 +139,29 @@ export const variantTags = pgTable("variantTags", {
         .references(() => productVariants.id, { onDelete: "cascade" }),
 });
 
+export const reviews = pgTable(
+    "reviews",
+    {
+        id: serial("id").primaryKey(),
+        rating: real("rating").notNull(),
+        userID: text("userID")
+            .notNull()
+            .references(() => users.id, { onDelete: "cascade" }),
+        productID: serial("productID")
+            .notNull()
+            .references(() => products.id, { onDelete: "cascade" }),
+        comment: text("comment").notNull(),
+        created: timestamp("created").defaultNow(),
+    },
+    (table) => {
+        return {
+            productIdx: index("productIdx").on(table.productID),
+            userIdx: index("userIdx").on(table.userID),
+        };
+    },
+);
+
+// Relations
 export const productRelations = relations(products, ({ many }) => ({
     productVariants: many(productVariants, { relationName: "productVariants" }),
     reviews: many(reviews, { relationName: "reviews" }),
@@ -172,28 +195,6 @@ export const variantTagsRelations = relations(variantTags, ({ one }) => ({
         relationName: "variantTags",
     }),
 }));
-
-export const reviews = pgTable(
-    "reviews",
-    {
-        id: serial("id").primaryKey(),
-        rating: real("rating").notNull(),
-        userID: text("userID")
-            .notNull()
-            .references(() => users.id, { onDelete: "cascade" }),
-        productID: serial("productID")
-            .notNull()
-            .references(() => products.id, { onDelete: "cascade" }),
-        comment: text("comment").notNull(),
-        created: timestamp("created").defaultNow(),
-    },
-    (table) => {
-        return {
-            productIdx: index("productIdx").on(table.productID),
-            userIdx: index("userIdx").on(table.userID),
-        };
-    },
-);
 
 export const reviewRelations = relations(reviews, ({ one }) => ({
     user: one(users, {
