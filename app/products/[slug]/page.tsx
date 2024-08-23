@@ -12,6 +12,8 @@ import ProductType from "@/components/products/product.type";
 import ProductPick from "@/components/products/product-pick";
 import ProductShowcase from "@/components/products/product-showcase";
 import Reviews from "@/components/reviews/reviews";
+import { getReviewAverage } from "@/lib/review-average";
+import Stars from "@/components/reviews/stars";
 
 // export const revalidate = 60;
 
@@ -37,7 +39,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         with: {
             product: {
                 with: {
-                    // reviews: true,
+                    reviews: true,
                     productVariants: {
                         with: { variantImages: true, variantTags: true },
                     },
@@ -47,9 +49,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
     });
 
     if (variant) {
-        // const reviewAvg = getReviewAverage(
-        //     variant?.product.reviews.map((r) => r.rating),
-        // );
+        const reviewAvg = getReviewAverage(
+            variant?.product.reviews.map((r) => r.rating),
+        );
 
         return (
             <main>
@@ -67,10 +69,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
                             <ProductType
                                 variants={variant.product.productVariants}
                             />
-                            {/* <Stars
+                            <Stars
                                 rating={reviewAvg}
                                 totalReviews={variant.product.reviews.length}
-                            /> */}
+                            />
                         </div>
                         <Separator className="my-2" />
                         <p className="py-2 text-2xl font-medium">
