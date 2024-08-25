@@ -3,7 +3,6 @@
 import { ReviewsWithUser } from "@/lib/infer-type";
 import React, { useCallback } from "react";
 import { Card, CardDescription, CardTitle } from "../ui/card";
-import Stars from "./stars";
 import { getReviewAverage } from "@/lib/review-average";
 import { Progress } from "../ui/progress";
 

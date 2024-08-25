@@ -3,19 +3,30 @@
 import { VariantsWithProduct } from "@/lib/infer-type";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useCallback } from "react";
 import { Badge } from "../ui/badge";
-import { format } from "path";
 import formatPrice from "@/lib/format-price";
+import { useSearchParams } from "next/navigation";
 
 type ProductsProps = {
     variants: VariantsWithProduct[];
 };
 
 const Products = ({ variants }: ProductsProps) => {
+    const params = useSearchParams();
+    const paramTag = params.get("tag");
+
+    const filtered = useCallback(() => {
+        if (paramTag && variants) {
+            return variants.filter((variant) =>
+                variant.variantTags.some((tag) => tag.tag === paramTag),
+            );
+        }
+        return variants;
+    }, [paramTag, variants]);
     return (
         <main className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-3">
-            {variants.map((variant) => (
+            {filtered().map((variant) => (
                 <Link
                     className="py-2"
                     key={variant.id}
