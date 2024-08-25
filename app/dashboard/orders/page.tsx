@@ -45,7 +45,7 @@ import Link from "next/link";
 export default async function Page() {
     const user = await auth();
     if (!user) {
-        redirect("/login");
+        redirect("/");
     }
     const userOrders = await db.query.orders.findMany({
         where: eq(orders.userID, user.user.id),
